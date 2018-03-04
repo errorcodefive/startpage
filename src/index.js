@@ -4,11 +4,13 @@ var app = express();
 
 var ejs = require('ejs');
 
-//var bodyParser = require('body-parser');
+var bodyParser = require('body-parser');
 var MongoClient = require('mongodb').MongoClient
 //password file
 var config = require('./config');
 var path = require ('path');
+
+
 
 //var Handlebars = require('handlebars');
 
@@ -27,7 +29,8 @@ MongoClient.connect(mongo_link, (err, client) =>{
 		db = client.db(config.mongodb.db_name)
 		console.log("Connected to MongoDB")
 
-//var things = require('./things.js');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.engine('html', require('ejs').renderFile);
 
@@ -36,6 +39,13 @@ app.set('view engine', 'ejs');
 app.get('/', function (req, res) {
 	//res.sendFile(path.join(__dirname + '/index.html'));
 	res.render('pages/main');
+});
+
+//test-getting from ejs bookmarks form
+app.post('/add-bookmark', function(req, res){
+	bookmark_in = req.body
+	console.log(bookmark_in)
+	res.render('partials/bookmarks_list', { bookmarks: bookmark_in});
 });
 
 
