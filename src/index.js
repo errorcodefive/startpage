@@ -1,7 +1,9 @@
 var express = require('express');
-var exphbs = require('express-handlebars');
 
 var app = express();
+
+var ejs = require('ejs');
+
 //var bodyParser = require('body-parser');
 var MongoClient = require('mongodb').MongoClient
 //password file
@@ -27,25 +29,15 @@ MongoClient.connect(mongo_link, (err, client) =>{
 
 //var things = require('./things.js');
 
-//handlebars
-// path = require('path');
-app.engine('handlebars', exphbs({
-	defaultLayout: 'main'
-	}));
-app.set('view engine', 'handlebars');
+app.engine('html', require('ejs').renderFile);
 
-//partials
-//.registerPartial("hello");
-
+app.set('view engine', 'ejs');
 
 app.get('/', function (req, res) {
 	//res.sendFile(path.join(__dirname + '/index.html'));
-	res.render('hello');
+	res.render('pages/main');
 });
 
-app.get('/login', function(req,res){
-	res.render('login');
-});
 
 //app.use('/things', things);
 
