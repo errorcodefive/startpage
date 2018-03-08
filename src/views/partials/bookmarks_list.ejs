@@ -1,7 +1,12 @@
 <div>
 	<%="Here" %>
 	<ul>
-		<li> <%= bookmarks.bookmark_name %>
+
+		<% for(var x=0; x<book_in.length; x++){ %>
+			<li>
+				<%= book_in[x].bookmark_url %>
+			</li>
+		<% }; %>
 	</ul>
 
 </div>

@@ -29,29 +29,44 @@ MongoClient.connect(mongo_link, (err, client) =>{
 		db = client.db(config.mongodb.db_name)
 		console.log("Connected to MongoDB")
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+	app.use(bodyParser.json());
+	app.use(bodyParser.urlencoded({extended: true}));
 
-app.engine('html', require('ejs').renderFile);
+	app.engine('html', require('ejs').renderFile);
 
-app.set('view engine', 'ejs');
+	app.set('view engine', 'ejs');
 
-app.get('/', function (req, res) {
-	//res.sendFile(path.join(__dirname + '/index.html'));
-	res.render('pages/main');
+	app.get('/', function (req, res) {
+		//res.sendFile(path.join(__dirname + '/index.html'));
+		res.render('pages/main');
+	});
+
+	//test-getting from ejs bookmarks form
+	app.post('/add-bookmark', function(req, res){
+		bookmark_in = req.body
+		console.log(bookmark_in)
+
+		db.collection("bookmarks").insertOne(bookmark_in, function(err, res){
+			if (err) throw err;
+			console.log("1 bookmark added");
+		});
+
+		db.collection("bookmarks").find().toArray(function(err, result){{
+			if(err) throw err;
+			console.log(result);
+			res.render('partials/bookmarks_list', {book_in: result})
+		}});
+
+		// res.render('partials/bookmarks_list', { book_in: db.collection("bookmarks").find({}).toArray(function(err, result){
+		// 	if(err) throw err;
+
+		// })});
+	});
+
+
+	//app.use('/things', things);
+
+	app.listen(8080);
+	console.log('Running on http://localhost:8080');
+
 });
-
-//test-getting from ejs bookmarks form
-app.post('/add-bookmark', function(req, res){
-	bookmark_in = req.body
-	console.log(bookmark_in)
-	res.render('partials/bookmarks_list', { bookmarks: bookmark_in});
-});
-
-
-//app.use('/things', things);
-
-app.listen(8080);
-console.log('Running on http://localhost:8080');
-
-})
