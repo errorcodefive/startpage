@@ -37,11 +37,18 @@ MongoClient.connect(mongo_link, (err, client) =>{
 	app.set('view engine', 'ejs');
 
 	app.get('/', function (req, res) {
-		//res.sendFile(path.join(__dirname + '/index.html'));
-		res.render('pages/main');
+		
+		//sending bookmarks
+
+		db.collection("bookmarks").find().toArray(function(err, result){{
+			if(err) throw err;
+			res.render('pages/main', {book_in: result});
+		}})
 	});
 
-	//test-getting from ejs bookmarks form
+
+
+	//post from bookmarks form
 	app.post('/add-bookmark', function(req, res){
 		bookmark_in = req.body
 		console.log(bookmark_in)
@@ -53,8 +60,7 @@ MongoClient.connect(mongo_link, (err, client) =>{
 
 		db.collection("bookmarks").find().toArray(function(err, result){{
 			if(err) throw err;
-			console.log(result);
-			res.render('partials/bookmarks_list', {book_in: result})
+			res.render('pages/main', {book_in: result})
 		}});
 
 		// res.render('partials/bookmarks_list', { book_in: db.collection("bookmarks").find({}).toArray(function(err, result){
@@ -70,3 +76,10 @@ MongoClient.connect(mongo_link, (err, client) =>{
 	console.log('Running on http://localhost:8080');
 
 });
+
+function renderMain(db, res){
+	db.collection("bookmarks").find().toArray(function(err,result){{
+		if(err) throw err;
+		res.render('pages/main', {book_in: result});
+	}})
+};
