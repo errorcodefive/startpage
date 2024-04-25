@@ -21,7 +21,6 @@ from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
@@ -29,5 +28,11 @@ urlpatterns += [
     path('homepage/', include('homepage.urls')),
     path('', RedirectView.as_view(url='homepage/', permanent=True)),
 ]
-
+urlpatterns +=[
+    path('resume/', include('resume.urls')),
+]
+urlpatterns +=[
+    path('recipe/', include('recipes.urls')),
+    path('recipes/', include('recipes.urls')),
+]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

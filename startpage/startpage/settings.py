@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #My additions
     'homepage.apps.HomepageConfig',
-    'movies.apps.MoviesConfig',
     'recipes.apps.RecipesConfig',
     'resume.apps.ResumeConfig'
 ]
@@ -126,3 +125,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Specifying directory of static file folder
+STATIC_ROOT = "staticfiles/"
+STATIC_URL = "static/"
+
+# Specifying directory of media file folder
+MEDIA_ROOT = "mediafiles/"
+MEDIA_URL = "media/"
